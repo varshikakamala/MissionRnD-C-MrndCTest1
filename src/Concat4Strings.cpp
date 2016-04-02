@@ -29,5 +29,24 @@ Difficulty : Hard
 
 char * concat_4strings(char *s1, char *s2, char *s3, char *s4){
 	//Return the new string created.
+	if (s1==NULL && s2==NULL && s3==NULL && s4==NULL)
 	return NULL;
+	int i, j,k,len;
+	strcpy(s1,strcat(s1, s2));
+	strcpy(s1,strcat(s1, s3));
+	strcpy(s1,strcat(s1, s4));
+	len = strlen(s1);
+	for (i = 0; i <len; i++)
+	{
+		for (j = i + 1; j <len; j++)
+		{
+			if (strcmp(s1[i], s1[j]) == 0)
+			{
+				for (k = j; k <= strlen(s1); k++)
+					strcpy(s1[k], s1[k + 1]);
+				len--;
+			}
+		}
+	}
+	return s1;
 }

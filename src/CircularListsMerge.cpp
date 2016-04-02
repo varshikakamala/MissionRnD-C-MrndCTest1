@@ -32,18 +32,44 @@ struct node{
 	int data;
 	struct node *next;
 };
-int merge_circularlists(struct node **head1, struct node **head2){
+struct node * merge_circularlists1(struct node **head1, struct node **head2){
 	//Returns Length of merged Sorted circular SLL and also points *head1 to final SLL .
-	if (head1==NULL && head2==NULL)  return -1;
-	int l1 = 0, l2 = 0;
-	struct node *temp1 = *head1,*temp2=*head2;
-	while (temp1 != NULL)
+	struct node *temp1 = *head1, *temp2 = *head2;
+		temp1 = *head1;
+		temp2 = *head2;
+
+	struct node *answer = NULL;
+	answer = (struct node*)malloc(sizeof(struct node));
+	if (temp1->data < temp2->data)
+	{
+		answer = temp1;
+		answer->next = merge_circularlists1(&temp1->next, &temp2);
+	}
+	else
+	{
+		answer = temp2;
+		answer->next = merge_circularlists1(&temp1, &temp2->next);
+	}
+	return answer;
+}
+int merge_circularlists(struct node **head1, struct node **head2)
+{
+	if (head1 == NULL && head2 == NULL)  return -1;
+	
+	int i = 0;
+	int l1 = 0, l2 = 0, d1, d2, i = 0, j = 0;
+	struct node *temp1 = *head1, *temp2 = *head2, *prev = NULL, *n;
+	d1 = temp1->data;
+	d2 = temp2->data;
+	temp1 = temp1->next;
+	while (temp1->data != d1)
 	{
 		l1++;
 		temp1 = temp1->next;
 	}
 	temp2 = *head2;
-	while (temp2 != NULL)
+	temp2 = temp2->next;
+	while (temp2->data != d2)
 	{
 		l2++;
 		temp2 = temp2->next;
@@ -51,21 +77,11 @@ int merge_circularlists(struct node **head1, struct node **head2){
 
 	if (head1 == NULL)  return l2;
 	if (head2 == NULL) return l1;
-	else
+	struct node *ans = merge_circularlists1(head1, head2);
+	while (ans != NULL)
 	{
-		temp1 = *head1;
-		temp2 = *head2;
-		if (temp1->data<temp2->data)
-		{
-			//temp2 = temp2->next;
-			
-
-		}
-		else
-		{
-
-			temp1 = temp1->next;
-		}
+		i++;
+		ans = ans->next;
 	}
-	
+	return i;
 }
